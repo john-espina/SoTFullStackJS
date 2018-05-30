@@ -5,7 +5,7 @@ const fetch = require('node-fetch');
 
 const port = process.env.PORT || 5000;
 
-const githubRepoUrl = 'https://api.github.com/users/marcusklein/repos';
+const githubRepoUrl = 'https://api.github.com/users/john-espina/repos';
 
 
 let projectsData = [

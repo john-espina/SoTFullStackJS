@@ -1,16 +1,37 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const fetch = require('node-fetch');
 
 const port = process.env.PORT || 5000;
 
+const githubRepoUrl = 'https://api.github.com/users/marcusklein/repos';
+
+
 let projectsData = [
-    {
-        name: 'Trade Me',
-        html_url: 'http://preview.trademe.co.nz',
-        description: 'I helped people buy stuff'
-    }
+
 ];
+
+function getProjects () {
+    fetch(githubRepoUrl)
+        .then(res => res.json())
+        .then(projects => {
+
+            const gitHubProjects = projects.map(project => {
+                return {
+                    name: project.name,
+                    html_url: project.html_url,
+                    description: project.description
+                }
+            });
+
+            projectsData = projectsData.concat(gitHubProjects);
+            console.log(`Loaded ${projectsData.length} projects`);
+        });
+}
+
+getProjects();
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 
